@@ -1,7 +1,7 @@
 package main
 
 import (
-	"2022/defaults"
+	"defaults"
 	"fmt"
 	"sort"
 	"strconv"
