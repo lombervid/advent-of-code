@@ -3,6 +3,7 @@ package main
 import (
 	"2022/defaults"
 	"fmt"
+	"sort"
 	"strconv"
 	"utils"
 )
@@ -18,12 +19,15 @@ func main() {
 	elves := getElvesCalories(fileinfo)
 	calories := getMaxCalories(elves)
 
-	fmt.Println(calories)
+	sort.Sort(sort.Reverse(sort.IntSlice(calories)))
+
+	fmt.Println("Part 1:", calories[0])
+	fmt.Println("Part 2:", calories[0]+calories[1]+calories[2])
 }
 
-func getElvesCalories(info []string) map[int][]int64 {
+func getElvesCalories(info []string) map[int][]int {
 	var elf int = 1
-	elves := make(map[int][]int64, 0)
+	elves := make(map[int][]int, 0)
 
 	for _, value := range info {
 		if value == "" {
@@ -32,24 +36,22 @@ func getElvesCalories(info []string) map[int][]int64 {
 		}
 		calories, err := strconv.ParseInt(value, 10, 64)
 		utils.CheckErrNil(err)
-		elves[elf] = append(elves[elf], calories)
+		elves[elf] = append(elves[elf], int(calories))
 	}
 
 	return elves
 }
 
-func getMaxCalories(m map[int][]int64) int64 {
-	var maxCalories int64
+func getMaxCalories(m map[int][]int) []int {
+	var maxCalories []int
 
 	for _, calories := range m {
-		var totalCalories int64
+		var totalCalories int
 		for _, calorie := range calories {
 			totalCalories += calorie
 		}
 
-		if totalCalories > maxCalories {
-			maxCalories = totalCalories
-		}
+		maxCalories = append(maxCalories, totalCalories)
 	}
 
 	return maxCalories
